@@ -1,0 +1,20 @@
+from routes import routes
+from controllers.modules import *
+
+
+class ApplicationHandler(Application):
+    def __init__(self):
+        handlers = routes.routes
+        settings = dict(
+            debug=True,
+            template_path=os.path.join(os.path.dirname(__file__), "templates"),
+            static_path=os.path.join(os.path.dirname(__file__), "static")
+        )
+        Application.__init__(self, handlers, **settings)
+
+
+if __name__ == "__main__":
+    parse_command_line()
+    server = HTTPServer(ApplicationHandler())
+    server.listen(os.environ.get("PORT", 9000))
+    IOLoop.instance().start()
